@@ -1,0 +1,11 @@
+pep8>=1.7.0,<1.8
+flake8==3.7.7
+astroid==1.6.6
+pylint==1.9.4
+mock==3.0.5
+codecov
+coverage<4.0
+requests
+requests_mock
+pytest==4.6.5
+cryptography==2.6.1
