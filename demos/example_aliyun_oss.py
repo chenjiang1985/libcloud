@@ -18,13 +18,13 @@ from libcloud.storage.providers import get_driver
 
 OSSDriver = get_driver(Provider.ALIYUN_OSS)
 
-your_access_key_id = 'LTAI4FkVoatEeoJJSazFLY1h'
-your_access_key_secret = 'zACYKVmUi7wyLo8YI3JhtTRQGqaxJX'
+your_access_key_id = 'your_ak'
+your_access_key_secret = 'your_sk'
 oss = OSSDriver('oss-cn-beijing.aliyuncs.com', your_access_key_id, your_access_key_secret)
 
 container_name = 'medusa-bkt'
 #object_name = 'me'
-object_name = 'iZ2ze25p95hhdgrda1hcm7Z/1/meta/tokenmap.json'
+object_name = 'your_obj'
 local_file_path = '/Users/chenjiang/git/libcloud/LICENSE'
 upload_object_name = 'OBJECT_NAME_FOR_UPLOAD_FILE'
 
