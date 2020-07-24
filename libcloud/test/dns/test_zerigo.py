@@ -52,7 +52,7 @@ class ZerigoTests(unittest.TestCase):
         zones = self.driver.list_zones()
         self.assertEqual(len(zones), 1)
         self.assertEqual(zones[0].domain, 'example.com')
-        self.assertEqual(zones[0].type, 'master')
+        self.assertEqual(zones[0].type, 'main')
         self.assertEqual(zones[0].extra['notes'], 'test foo bar')
 
     def test_list_zones_no_results(self):
@@ -106,8 +106,8 @@ class ZerigoTests(unittest.TestCase):
 
         self.assertEqual(zone.id, '12345678')
         self.assertEqual(zone.domain, 'example.com')
-        self.assertEqual(zone.extra['hostmaster'], 'dnsadmin@example.com')
-        self.assertEqual(zone.type, 'master')
+        self.assertEqual(zone.extra['hostmain'], 'dnsadmin@example.com')
+        self.assertEqual(zone.type, 'main')
 
     def test_get_zone_does_not_exist(self):
         ZerigoMockHttp.type = 'DOES_NOT_EXIST'
@@ -150,7 +150,7 @@ class ZerigoTests(unittest.TestCase):
     def test_create_zone_success(self):
         ZerigoMockHttp.type = 'CREATE_ZONE'
 
-        zone = self.driver.create_zone(domain='foo.bar.com', type='master',
+        zone = self.driver.create_zone(domain='foo.bar.com', type='main',
                                        ttl=None, extra=None)
         self.assertEqual(zone.id, '12345679')
         self.assertEqual(zone.domain, 'foo.bar.com')
@@ -159,7 +159,7 @@ class ZerigoTests(unittest.TestCase):
         ZerigoMockHttp.type = 'CREATE_ZONE_VALIDATION_ERROR'
 
         try:
-            self.driver.create_zone(domain='foo.bar.com', type='master',
+            self.driver.create_zone(domain='foo.bar.com', type='main',
                                     ttl=10, extra=None)
         except ZerigoError as e:
             self.assertEqual(len(e.errors), 2)

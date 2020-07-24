@@ -2077,7 +2077,7 @@ class BaseEC2NodeDriver(NodeDriver):
         :type ex_encrypted: ``bool``
 
         :param ex_kms_key_id: The full ARN of the AWS Key Management
-                            Service (AWS KMS) customer master key (CMK) to use
+                            Service (AWS KMS) customer main key (CMK) to use
                             when creating the encrypted volume.
                             Example:
                             arn:aws:kms:us-east-1:012345678910:key/abcd1234-a123

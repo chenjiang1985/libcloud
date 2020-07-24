@@ -123,7 +123,7 @@ class DNSPodDNSDriver(DNSDriver):
 
         return zone
 
-    def create_zone(self, domain, type='master', ttl=None, extra=None):
+    def create_zone(self, domain, type='main', ttl=None, extra=None):
         """
         :param domain: Zone domain name (e.g. example.com)
         :type domain: ``str``

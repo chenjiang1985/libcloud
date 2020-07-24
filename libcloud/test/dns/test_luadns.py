@@ -33,7 +33,7 @@ class LuadnsTests(unittest.TestCase):
         LuadnsMockHttp.type = None
         LuadnsDNSDriver.connectionCls.conn_class = LuadnsMockHttp
         self.driver = LuadnsDNSDriver(*DNS_PARAMS_LUADNS)
-        self.test_zone = Zone(id='11', type='master', ttl=None,
+        self.test_zone = Zone(id='11', type='main', ttl=None,
                               domain='example.com', extra={},
                               driver=self.driver)
         self.test_record = Record(id='13', type=RecordType.A,

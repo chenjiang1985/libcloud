@@ -40,7 +40,7 @@ API_HOST = 'api.auroradns.eu'
 
 # Default TTL required by libcloud, but doesn't do anything in AuroraDNS
 DEFAULT_ZONE_TTL = 3600
-DEFAULT_ZONE_TYPE = 'master'
+DEFAULT_ZONE_TYPE = 'main'
 
 VALID_RECORD_PARAMS_EXTRA = ['ttl', 'prio', 'health_check_id', 'disabled']
 
@@ -292,7 +292,7 @@ class AuroraDNSDriver(DNSDriver):
 
         return self.__res_to_record(zone, record)
 
-    def create_zone(self, domain, type='master', ttl=None, extra=None):
+    def create_zone(self, domain, type='main', ttl=None, extra=None):
         self.connection.set_context({'resource': 'zone', 'id': domain})
         res = self.connection.request('/zones', method='POST',
                                       data=json.dumps({'name': domain}))

@@ -71,14 +71,14 @@ class OnAppDNSDriver(DNSDriver):
         zone = self._to_zone(response.object)
         return zone
 
-    def create_zone(self, domain, type='master', ttl=None, extra=None):
+    def create_zone(self, domain, type='main', ttl=None, extra=None):
         """
         Create a new zone.
 
         :param domain: Zone domain name (e.g. example.com)
         :type domain: ``str``
 
-        :param type: Zone type (All zones are master by design).
+        :param type: Zone type (All zones are main by design).
         :type  type: ``str``
 
         :param ttl: TTL for new records. (This is not really used)
@@ -305,7 +305,7 @@ class OnAppDNSDriver(DNSDriver):
                  'created_at': dns_zone.get('created_at'),
                  'updated_at': dns_zone.get('updated_at')}
 
-        type = 'master'
+        type = 'main'
 
         return Zone(id=id, domain=name, type=type, ttl=DEFAULT_ZONE_TTL,
                     driver=self, extra=extra)

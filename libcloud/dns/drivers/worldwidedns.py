@@ -164,7 +164,7 @@ class WorldWideDNSDriver(DNSDriver):
         record = self._to_record(record_id, subdomain, type, data, zone)
         return record
 
-    def update_zone(self, zone, domain, type='master', ttl=None, extra=None,
+    def update_zone(self, zone, domain, type='main', ttl=None, extra=None,
                     ex_raw=False):
         """
         Update an existing zone.
@@ -175,7 +175,7 @@ class WorldWideDNSDriver(DNSDriver):
         :param domain: Zone domain name (e.g. example.com)
         :type  domain: ``str``
 
-        :param type: Zone type (master / slave).
+        :param type: Zone type (main / subordinate).
         :type  type: ``str``
 
         :param ttl: TTL for new records. (optional)
@@ -276,14 +276,14 @@ class WorldWideDNSDriver(DNSDriver):
         record = self.get_record(zone.id, record_id)
         return record
 
-    def create_zone(self, domain, type='master', ttl=None, extra=None):
+    def create_zone(self, domain, type='main', ttl=None, extra=None):
         """
         Create a new zone.
 
         :param domain: Zone domain name (e.g. example.com)
         :type domain: ``str``
 
-        :param type: Zone type (master / slave).
+        :param type: Zone type (main / subordinate).
         :type  type: ``str``
 
         :param ttl: TTL for new records. (optional)
@@ -301,9 +301,9 @@ class WorldWideDNSDriver(DNSDriver):
         or
         https://www.worldwidedns.net/dns_api_protocol_new_domain_reseller.asp
         """
-        if type == 'master':
+        if type == 'main':
             _type = 0
-        elif type == 'slave':
+        elif type == 'subordinate':
             _type = 1
         if extra:
             dyn = extra.get('DYN') or 1
@@ -488,7 +488,7 @@ class WorldWideDNSDriver(DNSDriver):
         data = line.split('\x1f')
         name = data[0]
         if data[1] == "P":
-            type = "master"
+            type = "main"
             domain_data = self._get_domain_data(name)
             resp_lines = re.split('\r?\n', domain_data.body)
             soa_block = resp_lines[:6]
@@ -507,7 +507,7 @@ class WorldWideDNSDriver(DNSDriver):
                 except IndexError:
                     extra['D%s' % (line + 1)] = ''
         elif data[1] == 'S':
-            type = 'slave'
+            type = 'subordinate'
             extra = {}
             ttl = 0
         return Zone(id=name, domain=name, type=type,

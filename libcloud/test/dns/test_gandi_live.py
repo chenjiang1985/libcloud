@@ -36,10 +36,10 @@ class GandiLiveTests(unittest.TestCase):
         GandiLiveDNSDriver.connectionCls.conn_class = GandiLiveMockHttp
         GandiLiveMockHttp.type = None
         self.driver = GandiLiveDNSDriver(*DNS_GANDI_LIVE)
-        self.test_zone = Zone(id='example.com', type='master', ttl=None,
+        self.test_zone = Zone(id='example.com', type='main', ttl=None,
                               domain='example.com',
                               extra={'zone_uuid': 'a53re'}, driver=self)
-        self.test_bad_zone = Zone(id='badexample.com', type='master', ttl=None,
+        self.test_bad_zone = Zone(id='badexample.com', type='main', ttl=None,
                                   domain='badexample.com',
                                   extra={'zone_uuid': 'a53rf'},
                                   driver=self)
@@ -55,12 +55,12 @@ class GandiLiveTests(unittest.TestCase):
         self.assertEqual(len(zones), 2)
         zone = zones[0]
         self.assertEqual(zone.id, 'example.com')
-        self.assertEqual(zone.type, 'master')
+        self.assertEqual(zone.type, 'main')
         self.assertEqual(zone.domain, 'example.com')
         self.assertIsNone(zone.ttl)
         zone = zones[1]
         self.assertEqual(zone.id, 'example.net')
-        self.assertEqual(zone.type, 'master')
+        self.assertEqual(zone.type, 'main')
         self.assertEqual(zone.domain, 'example.net')
         self.assertIsNone(zone.ttl)
 
@@ -80,7 +80,7 @@ class GandiLiveTests(unittest.TestCase):
     def test_get_zone(self):
         zone = self.driver.get_zone('example.com')
         self.assertEqual(zone.id, 'example.com')
-        self.assertEqual(zone.type, 'master')
+        self.assertEqual(zone.type, 'main')
         self.assertEqual(zone.domain, 'example.com')
         self.assertIsNone(zone.ttl)
 

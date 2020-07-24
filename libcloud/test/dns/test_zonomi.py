@@ -35,7 +35,7 @@ class ZonomiTests(unittest.TestCase):
         ZonomiMockHttp.type = None
         self.driver = ZonomiDNSDriver(*DNS_PARAMS_ZONOMI)
         self.test_zone = Zone(id='zone.com', domain='zone.com',
-                              driver=self.driver, type='master', ttl=None,
+                              driver=self.driver, type='main', ttl=None,
                               extra={})
         self.test_record = Record(id='record.zone.com', name='record.zone.com',
                                   data='127.0.0.1', type='A',
@@ -63,21 +63,21 @@ class ZonomiTests(unittest.TestCase):
         zone = zones[0]
         self.assertEqual(zone.id, 'thegamertest.com')
         self.assertEqual(zone.domain, 'thegamertest.com')
-        self.assertEqual(zone.type, 'master')
+        self.assertEqual(zone.type, 'main')
         self.assertIsNone(zone.ttl)
         self.assertEqual(zone.driver, self.driver)
 
         second_zone = zones[1]
         self.assertEqual(second_zone.id, 'lonelygamer.com')
         self.assertEqual(second_zone.domain, 'lonelygamer.com')
-        self.assertEqual(second_zone.type, 'master')
+        self.assertEqual(second_zone.type, 'main')
         self.assertIsNone(second_zone.ttl)
         self.assertEqual(second_zone.driver, self.driver)
 
         third_zone = zones[2]
         self.assertEqual(third_zone.id, 'gamertest.com')
         self.assertEqual(third_zone.domain, 'gamertest.com')
-        self.assertEqual(third_zone.type, 'master')
+        self.assertEqual(third_zone.type, 'main')
         self.assertIsNone(third_zone.ttl)
         self.assertEqual(third_zone.driver, self.driver)
 
@@ -96,7 +96,7 @@ class ZonomiTests(unittest.TestCase):
 
         self.assertEqual(zone.id, 'gamertest.com')
         self.assertEqual(zone.domain, 'gamertest.com')
-        self.assertEqual(zone.type, 'master')
+        self.assertEqual(zone.type, 'main')
         self.assertIsNone(zone.ttl)
         self.assertEqual(zone.driver, self.driver)
 
@@ -131,7 +131,7 @@ class ZonomiTests(unittest.TestCase):
 
         self.assertEqual(zone.id, 'myzone.com')
         self.assertEqual(zone.domain, 'myzone.com')
-        self.assertEqual(zone.type, 'master')
+        self.assertEqual(zone.type, 'main')
         self.assertIsNone(zone.ttl)
 
     def test_list_records_empty_list(self):
@@ -175,7 +175,7 @@ class ZonomiTests(unittest.TestCase):
 
     def test_get_record_does_not_exist(self):
         ZonomiMockHttp.type = 'GET_RECORD_DOES_NOT_EXIST'
-        zone = Zone(id='zone.com', domain='zone.com', type='master',
+        zone = Zone(id='zone.com', domain='zone.com', type='main',
                     ttl=None, driver=self.driver)
         self.driver.get_zone = MagicMock(return_value=zone)
         record_id = 'nonexistent'
@@ -189,7 +189,7 @@ class ZonomiTests(unittest.TestCase):
 
     def test_get_record_success(self):
         ZonomiMockHttp.type = 'GET_RECORD_SUCCESS'
-        zone = Zone(id='zone.com', domain='zone.com', type='master',
+        zone = Zone(id='zone.com', domain='zone.com', type='main',
                     ttl=None, driver=self.driver)
         self.driver.get_zone = MagicMock(return_value=zone)
         record = self.driver.get_record(record_id='oltjano',
@@ -241,12 +241,12 @@ class ZonomiTests(unittest.TestCase):
         self.assertEqual(record.data, '127.0.0.1')
         self.assertEqual(record.zone, zone)
 
-    def test_convert_to_slave(self):
+    def test_convert_to_subordinate(self):
         zone = self.test_zone
         result = self.driver.ex_convert_to_secondary(zone, '1.2.3.4')
         self.assertTrue(result)
 
-    def test_convert_to_slave_couldnt_convert(self):
+    def test_convert_to_subordinate_couldnt_convert(self):
         zone = self.test_zone
         ZonomiMockHttp.type = 'COULDNT_CONVERT'
         try:
@@ -256,16 +256,16 @@ class ZonomiTests(unittest.TestCase):
         else:
             self.fail('Exception was not thrown.')
 
-    def test_convert_to_master(self):
+    def test_convert_to_main(self):
         zone = self.test_zone
-        result = self.driver.ex_convert_to_master(zone)
+        result = self.driver.ex_convert_to_main(zone)
         self.assertTrue(result)
 
-    def test_convert_to_master_couldnt_convert(self):
+    def test_convert_to_main_couldnt_convert(self):
         zone = self.test_zone
         ZonomiMockHttp.type = 'COULDNT_CONVERT'
         try:
-            self.driver.ex_convert_to_master(zone)
+            self.driver.ex_convert_to_main(zone)
         except ZoneDoesNotExistError as e:
             self.assertEqual(e.zone_id, 'zone.com')
         else:
@@ -353,7 +353,7 @@ class ZonomiMockHttp(MockHttp):
         return (httplib.OK, body, {}, httplib.responses[httplib.OK])
 
     def _app_dns_converttosecondary_jsp(self, method, url, body, headers):
-        body = self.fixtures.load('converted_to_slave.xml')
+        body = self.fixtures.load('converted_to_subordinate.xml')
         return (httplib.OK, body, {}, httplib.responses[httplib.OK])
 
     def _app_dns_converttosecondary_jsp_COULDNT_CONVERT(self, method, url,
@@ -361,11 +361,11 @@ class ZonomiMockHttp(MockHttp):
         body = self.fixtures.load('couldnt_convert.xml')
         return (httplib.OK, body, {}, httplib.responses[httplib.OK])
 
-    def _app_dns_converttomaster_jsp(self, method, url, body, headers):
-        body = self.fixtures.load('converted_to_master.xml')
+    def _app_dns_converttomain_jsp(self, method, url, body, headers):
+        body = self.fixtures.load('converted_to_main.xml')
         return (httplib.OK, body, {}, httplib.responses[httplib.OK])
 
-    def _app_dns_converttomaster_jsp_COULDNT_CONVERT(self, method, url,
+    def _app_dns_converttomain_jsp_COULDNT_CONVERT(self, method, url,
                                                      body, headers):
         body = self.fixtures.load('couldnt_convert.xml')
         return (httplib.OK, body, {}, httplib.responses[httplib.OK])

@@ -158,14 +158,14 @@ class VultrDNSDriver(DNSDriver):
 
         return ret_record
 
-    def create_zone(self, domain, type='master', ttl=None, extra=None):
+    def create_zone(self, domain, type='main', ttl=None, extra=None):
         """
         Returns a `Zone` object.
 
         :param domain: Zone domain name, (e.g. example.com).
         :type domain: ``str``
 
-        :param type: Zone type (master / slave).
+        :param type: Zone type (main / subordinate).
         :type  type: ``str``
 
         :param ttl: TTL for new records. (optional)
@@ -346,7 +346,7 @@ class VultrDNSDriver(DNSDriver):
 
         :rtype: :instance: `Zone`
         """
-        type = 'master'
+        type = 'main'
         extra = {'date_created': item['date_created']}
 
         zone = Zone(id=item['domain'], domain=item['domain'], driver=self,

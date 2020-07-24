@@ -107,7 +107,7 @@ class GandiLiveDNSDriver(BaseGandiLiveDriver, DNSDriver):
 
     :return: :class:`Zone` with attribute zone_uuid set in extra ``dict``
     """
-    def create_zone(self, domain, type='master', ttl=None, extra=None):
+    def create_zone(self, domain, type='main', ttl=None, extra=None):
         if extra and 'name' in extra:
             zone_name = extra['name']
         else:
@@ -443,7 +443,7 @@ class GandiLiveDNSDriver(BaseGandiLiveDriver, DNSDriver):
         return Zone(
             id=str(zone['fqdn']),
             domain=zone['fqdn'],
-            type='master',
+            type='main',
             ttl=0,
             driver=self,
             extra=extra,

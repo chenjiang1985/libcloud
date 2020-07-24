@@ -32,8 +32,8 @@ API_HOST = 'api.cloudflare.com'
 API_BASE = '/client/v4'
 
 CLOUDFLARE_TO_LIBCLOUD_ZONE_TYPE = {
-    'full': 'master',
-    'partial': 'slave',
+    'full': 'main',
+    'partial': 'subordinate',
 }
 
 LIBCLOUD_TO_CLOUDFLARE_ZONE_TYPE = reverse_dict(
@@ -201,7 +201,7 @@ class CloudFlareDNSDriver(DNSDriver):
 
         return zone
 
-    def create_zone(self, domain, type='master', ttl=None, extra=None):
+    def create_zone(self, domain, type='main', ttl=None, extra=None):
         """
         @inherits: :class:`DNSDriver.create_zone`
 
@@ -244,7 +244,7 @@ class CloudFlareDNSDriver(DNSDriver):
 
         return zone
 
-    def update_zone(self, zone, domain, type='master', ttl=None, extra=None):
+    def update_zone(self, zone, domain, type='main', ttl=None, extra=None):
         """
         @inherits: :class:`DNSDriver.update_zone`
 

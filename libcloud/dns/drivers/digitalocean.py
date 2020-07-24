@@ -102,14 +102,14 @@ class DigitalOceanDNSDriver(DigitalOcean_v2_BaseDriver, DNSDriver):
 #       without breaking the DNSDriver.get_record parameters?
         return self._to_record(data, self.get_zone(zone_id))
 
-    def create_zone(self, domain, type='master', ttl=None, extra=None):
+    def create_zone(self, domain, type='main', ttl=None, extra=None):
         """
         Create a new zone.
 
         :param domain: Zone domain name (e.g. example.com)
         :type domain: ``str``
 
-        :param type: Zone type (master / slave) (does nothing).
+        :param type: Zone type (main / subordinate) (does nothing).
         :type  type: ``str``
 
         :param ttl: TTL for new records. (does nothing)
@@ -133,7 +133,7 @@ class DigitalOceanDNSDriver(DigitalOcean_v2_BaseDriver, DNSDriver):
 
         return Zone(id=res.object['domain']['name'],
                     domain=res.object['domain']['name'],
-                    type='master', ttl=1800, driver=self, extra={})
+                    type='main', ttl=1800, driver=self, extra={})
 
     def create_record(self, name, zone, type, data, extra=None):
         """
@@ -297,5 +297,5 @@ class DigitalOceanDNSDriver(DigitalOcean_v2_BaseDriver, DNSDriver):
 
     def _to_zone(self, data):
         extra = {'zone_file': data['zone_file']}
-        return Zone(id=data['name'], domain=data['name'], type='master',
+        return Zone(id=data['name'], domain=data['name'], type='main',
                     ttl=data['ttl'], driver=self, extra=extra)

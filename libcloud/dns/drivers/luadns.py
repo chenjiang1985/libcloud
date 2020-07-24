@@ -117,7 +117,7 @@ class LuadnsDNSDriver(DNSDriver):
 
         return response.status == 200
 
-    def create_zone(self, domain, type='master', ttl=None, extra=None):
+    def create_zone(self, domain, type='main', ttl=None, extra=None):
         """
         Create a new zone.
 

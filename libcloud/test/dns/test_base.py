@@ -60,13 +60,13 @@ class BaseTestCase(unittest.TestCase):
         self.tmp_file = tempfile.mkstemp()
         self.tmp_path = self.tmp_file[1]
 
-    def test_export_zone_to_bind_format_slave_should_throw(self):
-        zone = Zone(id=1, domain='example.com', type='slave', ttl=900,
+    def test_export_zone_to_bind_format_subordinate_should_throw(self):
+        zone = Zone(id=1, domain='example.com', type='subordinate', ttl=900,
                     driver=self.driver)
         self.assertRaises(ValueError, zone.export_to_bind_format)
 
     def test_export_zone_to_bind_format_success(self):
-        zone = Zone(id=1, domain='example.com', type='master', ttl=900,
+        zone = Zone(id=1, domain='example.com', type='main', ttl=900,
                     driver=self.driver)
 
         mock_records = []

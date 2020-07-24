@@ -32,7 +32,7 @@ class DNSPodDNSTests(unittest.TestCase):
         DNSPodMockHttp.type = None
         DNSPodDNSDriver.connectionCls.conn_class = DNSPodMockHttp
         self.driver = DNSPodDNSDriver(*DNS_PARAMS_DNSPOD)
-        self.test_zone = Zone(id='11', type='master', ttl=None,
+        self.test_zone = Zone(id='11', type='main', ttl=None,
                               domain='test.com', extra={}, driver=self.driver)
         self.test_record = Record(id='13', type=RecordType.A,
                                   name='example.com', zone=self.test_zone,

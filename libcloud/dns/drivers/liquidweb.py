@@ -148,7 +148,7 @@ class LiquidWebDNSDriver(DNSDriver):
         record = self._to_record(response.objects[0], zone=zone)
         return record
 
-    def create_zone(self, domain, type='master', ttl=None, extra=None):
+    def create_zone(self, domain, type='main', ttl=None, extra=None):
         """
         Create a new zone.
 

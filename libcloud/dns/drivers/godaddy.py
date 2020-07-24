@@ -436,7 +436,7 @@ class GoDaddyDNSDriver(DNSDriver):
     def _to_zone(self, item):
         extra = {"expires": item['expires']}
         zone = Zone(id=item['domainId'], domain=item['domain'],
-                    type='master', ttl=None,
+                    type='main', ttl=None,
                     driver=self, extra=extra)
         return zone
 

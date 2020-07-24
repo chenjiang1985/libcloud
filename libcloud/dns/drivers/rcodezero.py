@@ -186,31 +186,31 @@ class RcodeZeroDNSDriver(DNSDriver):
         return Record(id=None, name=name, data=data,
                       type=type, zone=zone, ttl=ttl, driver=self)
 
-    def create_zone(self, domain, type='master', ttl=None, extra={}):
+    def create_zone(self, domain, type='main', ttl=None, extra={}):
         """
         Create a new zone.
 
         :param name: Zone domain name (e.g. example.com)
         :type  name: ``str``
 
-        :param domain: Zone type ('master' / 'slave'). (required).
+        :param domain: Zone type ('main' / 'subordinate'). (required).
         :type  domain: :class:`Zone`
 
         :param ttl: TTL for new records. (optional). Ignored by RcodeZero.
                     RcodeZero uses record specific TTLs.
         :type  ttl: ``int``
 
-        :param extra: Extra attributes: 'masters' (for type=slave):
-                    ``extra={'masters': ['193.0.2.2','2001:db8::2']}``
-                    sets the Master nameservers for a type=slave zone.
+        :param extra: Extra attributes: 'mains' (for type=subordinate):
+                    ``extra={'mains': ['193.0.2.2','2001:db8::2']}``
+                    sets the Main nameservers for a type=subordinate zone.
         :type extra: ``dict``
 
         :rtype: :class:`Zone`
         """
         action = '%s/zones' % (self.api_root)
-        if type.lower() == 'slave' and (extra is None or
-                                        extra.get('masters', None) is None):
-            msg = 'Master IPs required for slave zones'
+        if type.lower() == 'subordinate' and (extra is None or
+                                        extra.get('mains', None) is None):
+            msg = 'Main IPs required for subordinate zones'
             raise ValueError(msg)
         payload = {'domain': domain.lower(), 'type': type.lower()}
         payload.update(extra)
@@ -238,15 +238,15 @@ class RcodeZeroDNSDriver(DNSDriver):
         :param domain: Zone domain name (e.g. example.com)
         :type  domain: ``str``
 
-        :param type: Zone type ('master' / 'slave').
+        :param type: Zone type ('main' / 'subordinate').
         :type  type: ``str``
 
         :param ttl: not supported. RcodeZero uses RRSet-specific TTLs
         :type  ttl: ``int``
 
-        :param extra: Extra attributes: 'masters' (for type=slave)
-                     ``extra={'masters': ['193.0.2.2','2001:db8::2']}``
-                     sets the Master nameserver addresses for a type=slave zone
+        :param extra: Extra attributes: 'mains' (for type=subordinate)
+                     ``extra={'mains': ['193.0.2.2','2001:db8::2']}``
+                     sets the Main nameserver addresses for a type=subordinate zone
         :type extra: ``dict``
 
         :rtype: :class:`Zone`
@@ -255,9 +255,9 @@ class RcodeZeroDNSDriver(DNSDriver):
         if type is None:
             type = zone.type
 
-        if type.lower() == 'slave' and (extra is None or
-                                        extra.get('masters', None) is None):
-            msg = 'Master IPs required for slave zones'
+        if type.lower() == 'subordinate' and (extra is None or
+                                        extra.get('mains', None) is None):
+            msg = 'Main IPs required for subordinate zones'
             raise ValueError(msg)
         payload = {'domain': domain.lower(), 'type': type.lower()}
         if extra is not None:
@@ -446,7 +446,7 @@ class RcodeZeroDNSDriver(DNSDriver):
         extra = {}
         for e in ['dnssec_status', 'dnssec_status_detail', 'dnssec_ksk_status',
                   'dnssec_ksk_status_detail', 'dnssec_ds', 'dnssec_dnskey',
-                  'dnssec_safe_to_unsign', 'dnssec', 'masters', 'serial',
+                  'dnssec_safe_to_unsign', 'dnssec', 'mains', 'serial',
                   'created', 'last_check']:
             if e in item:
                 extra[e] = item[e]

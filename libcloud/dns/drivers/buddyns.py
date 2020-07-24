@@ -71,7 +71,7 @@ class BuddyNSDNSDriver(DNSDriver):
 
         return zone
 
-    def create_zone(self, domain, type='master', ttl=None, extra=None):
+    def create_zone(self, domain, type='main', ttl=None, extra=None):
         """
         :param domain: Zone domain name (e.g. example.com)
         :type domain: ``str``
@@ -88,8 +88,8 @@ class BuddyNSDNSDriver(DNSDriver):
         :type extra: ``dict``
 
         :rtype: :class:`Zone`
-        Do not forget to pass the master in extra,
-        extra = {'master':'65.55.37.62'} for example.
+        Do not forget to pass the main in extra,
+        extra = {'main':'65.55.37.62'} for example.
         """
         action = '/api/v2/zone/'
         data = {'name': domain}

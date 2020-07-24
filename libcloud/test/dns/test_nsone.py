@@ -31,7 +31,7 @@ class NsOneTests(unittest.TestCase):
         NsOneMockHttp.type = None
         NsOneDNSDriver.connectionCls.conn_class = NsOneMockHttp
         self.driver = NsOneDNSDriver(*DNS_PARAMS_NSONE)
-        self.test_zone = Zone(id='test.com', type='master', ttl=None,
+        self.test_zone = Zone(id='test.com', type='main', ttl=None,
                               domain='test.com', extra={}, driver=self)
         self.test_record = Record(id='13', type=RecordType.A,
                                   name='example.com', zone=self.test_zone,

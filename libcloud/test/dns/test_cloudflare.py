@@ -52,7 +52,7 @@ class CloudFlareDNSDriverTestCase(unittest.TestCase):
         zone = zones[0]
         self.assertEqual(zone.id, '1234')
         self.assertEqual(zone.domain, 'example.com')
-        self.assertEqual(zone.type, 'master')
+        self.assertEqual(zone.type, 'main')
 
         for attribute_name in ZONE_EXTRA_ATTRIBUTES:
             self.assertTrue(attribute_name in zone.extra)
@@ -100,7 +100,7 @@ class CloudFlareDNSDriverTestCase(unittest.TestCase):
         zone = self.driver.get_zone(zone_id='1234')
         self.assertEqual(zone.id, '1234')
         self.assertEqual(zone.domain, 'example.com')
-        self.assertEqual(zone.type, 'master')
+        self.assertEqual(zone.type, 'main')
 
     def test_get_zone_zone_doesnt_exist(self):
         with self.assertRaises(ZoneDoesNotExistError):

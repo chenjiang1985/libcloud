@@ -30,7 +30,7 @@ class BuddyNSDNSTests(unittest.TestCase):
         BuddyNSMockHttp.type = None
         BuddyNSDNSDriver.connectionCls.conn_class = BuddyNSMockHttp
         self.driver = BuddyNSDNSDriver(*DNS_PARAMS_BUDDYNS)
-        self.test_zone = Zone(id='test.com', type='master', ttl=None,
+        self.test_zone = Zone(id='test.com', type='main', ttl=None,
                               domain='test.com', extra={}, driver=self)
 
     def test_list_zones_empty(self):
@@ -106,7 +106,7 @@ class BuddyNSDNSTests(unittest.TestCase):
 
         try:
             self.driver.create_zone(domain='newzone.com',
-                                    extra={'master': '13.0.0.1'})
+                                    extra={'main': '13.0.0.1'})
         except ZoneAlreadyExistsError as e:
             self.assertEqual(e.zone_id, 'newzone.com')
         else:

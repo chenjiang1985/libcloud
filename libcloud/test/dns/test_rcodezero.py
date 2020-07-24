@@ -35,7 +35,7 @@ class RcodeZeroDNSTestCase(LibcloudTestCase):
         self.driver = RcodeZeroDNSDriver('mysecret')
 
         self.test_zone = Zone(id='example.at', domain='example.at',
-                              driver=self.driver, type='master', ttl=None,
+                              driver=self.driver, type='main', ttl=None,
                               extra={})
         self.test_record = Record(id=None, name='', data='192.0.2.1',
                                   type=RecordType.A, zone=self.test_zone,
@@ -53,12 +53,12 @@ class RcodeZeroDNSTestCase(LibcloudTestCase):
         self.assertEqual(record.ttl, 86400)
 
     def test_create_zone(self):
-        extra = {"masters": ["193.0.2.2"]}
+        extra = {"mains": ["193.0.2.2"]}
         zone = self.driver.create_zone(
-            "example.at", type='slave', extra=extra)
+            "example.at", type='subordinate', extra=extra)
         self.assertEqual(zone.id, 'example.at.')
         self.assertEqual(zone.domain, 'example.at')
-        self.assertEqual(zone.type, 'slave')
+        self.assertEqual(zone.type, 'subordinate')
         self.assertEqual(zone.ttl, None)
 
     def test_delete_record(self):
@@ -75,7 +75,7 @@ class RcodeZeroDNSTestCase(LibcloudTestCase):
         zone = self.driver.get_zone('example.at')
         self.assertEqual(zone.id, 'example.at')
         self.assertEqual(zone.domain, 'example.at')
-        self.assertEqual(zone.type, 'master')
+        self.assertEqual(zone.type, 'main')
         self.assertEqual(zone.ttl, None)
 
     def test_list_record_types(self):
@@ -90,13 +90,13 @@ class RcodeZeroDNSTestCase(LibcloudTestCase):
         zones = self.driver.list_zones()
         self.assertEqual(zones[0].id, 'example1.at')
         self.assertEqual(zones[0].domain, 'example1.at')
-        self.assertEqual(zones[0].type, 'slave')
+        self.assertEqual(zones[0].type, 'subordinate')
         self.assertEqual(zones[0].ttl, None)
-        self.assertEqual(zones[0].extra['masters'][0], '193.0.2.2')
+        self.assertEqual(zones[0].extra['mains'][0], '193.0.2.2')
         self.assertEqual(zones[0].extra['serial'], 20180411)
         self.assertEqual(zones[1].id, 'example2.at')
         self.assertEqual(zones[1].domain, 'example2.at')
-        self.assertEqual(zones[1].type, 'master')
+        self.assertEqual(zones[1].type, 'main')
         self.assertEqual(zones[1].ttl, None)
 
     def test_update_record(self):
@@ -119,10 +119,10 @@ class RcodeZeroDNSTestCase(LibcloudTestCase):
 
     def test_create_existing_zone(self):
         RcodeZeroDNSMockHttp.type = 'EXISTS'
-        extra = {'masters': ['193.0.2.2']}
+        extra = {'mains': ['193.0.2.2']}
         with self.assertRaises(ZoneAlreadyExistsError):
             self.driver.create_zone(
-                "example1.at", type='slave', extra=extra)
+                "example1.at", type='subordinate', extra=extra)
 
     def test_get_missing_zone(self):
         RcodeZeroDNSMockHttp.type = 'MISSING'
